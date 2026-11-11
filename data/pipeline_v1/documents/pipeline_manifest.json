@@ -1,0 +1,41 @@
+{
+  "pipeline_version": "week3-v1",
+  "generated_at_utc": "2026-11-11T12:35:16.108649+00:00",
+  "data_type": "documents",
+  "configuration": {
+    "chunk_size": 150,
+    "method": "paragraph-aware"
+  },
+  "processing_method": "paragraph-aware",
+  "sources": [
+    {
+      "path": "/content/week3_project/data/raw/diabetes_guidelines.txt",
+      "sha256": "d727a70fd3a5e12889554dd21d5c824ee66452df2dd0da539a5aa099b99b6c13"
+    }
+  ],
+  "outputs": [
+    "/content/week3_project/data/pipeline_v1/documents/prepared_text.jsonl"
+  ],
+  "source_output_mapping": [
+    {
+      "source": "/content/week3_project/data/raw/diabetes_guidelines.txt",
+      "output": "/content/week3_project/data/pipeline_v1/documents/prepared_text.jsonl"
+    }
+  ],
+  "inspection": {
+    "source": "diabetes_guidelines.txt",
+    "characters": 474,
+    "pages": null
+  },
+  "validation": {
+    "output_count": 1,
+    "output_sha256": [
+      "2bde6e6376e213633f594b936c4c6707a9486907da194a9188971747a3aa7e25"
+    ],
+    "output_bytes": [
+      894
+    ]
+  },
+  "source_version": "Not verified",
+  "access_rights": "Not verified"
+}

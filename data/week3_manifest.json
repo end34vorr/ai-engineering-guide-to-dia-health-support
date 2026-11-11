@@ -1,0 +1,17 @@
+{
+  "pipeline_version": "week3-v1",
+  "generated_at_utc": "2026-11-11T12:13:28.055053+00:00",
+  "records": [
+    {
+      "source_id": "S01",
+      "source_filename": "diabetes_guidelines.txt",
+      "source_sha256": "d727a70fd3a5e12889554dd21d5c824ee66452df2dd0da539a5aa099b99b6c13",
+      "prepared_output": "data/processed/prepared_text.jsonl",
+      "prepared_sha256": "bdc9315e16369d616962e3fadd5d5080bb624dc4a9d58f3053bc6686fc281f0b",
+      "processing_note": "paragraph-aware-char-150",
+      "source_version": "Not verified",
+      "access_rights": "Not verified",
+      "status": "Prepared; quality review pending"
+    }
+  ]
+}
