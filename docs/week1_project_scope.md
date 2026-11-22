@@ -1,53 +1,63 @@
 # Week 1 — Project Scope: Guide to Dia
 
 **Project Name:** Guide to Dia
-**Domain:** Public health / preventive health education (type 2 diabetes risk awareness)
+**Domain:** Public health / preventive health, type 2 diabetes prevention habits in Malaysia
 
 ## Problem Statement
-Young adults in Malaysia often do not know they may be at risk of type 2 diabetes. Existing risk tools give a score without explaining why a factor matters or what to do next, and general chatbots may invent medical facts. Guide to Dia combines a deterministic rule-based calculator with a retrieval-grounded AI that explains the result in simple words, cites official documents, and gives one next step.
+A one-off diabetes risk score does not change habits, and habits are what prevention depends on. Malaysia has guidance for those habits, such as the Malaysian Healthy Plate (Suku-Suku Separuh), but about 80% of adults had never heard of it in NHMS 2019. Digital prevention programmes found in Malaysia are research pilots for people already high-risk or prediabetic and rely on human coaches. Guide to Dia is a habit tracker with a grounded AI coach for young adults who are not yet prediabetic: rules compute the risk score, goals and progress; a retrieval-grounded AI explains progress and answers questions with citations; data stays on the user's device.
 
 ## Evidence of the Problem
-- **Evidence 1:** About 50% of people with diabetes are undiagnosed. — *MOH et al., CPG Management of T2DM, 6th ed. (Dec 2020), Quick Reference Guide, key messages.*
-- **Evidence 2:** About 84% of Malaysian adults aged 18–29 with diabetes were undiagnosed in NHMS 2023. — *The Star, "One in six Malaysians are diabetic, many unaware", 2 Aug 2025 (quoting the MOH Disease Control Division). Check the figure against the original NHMS 2023 report before the final proposal.*
-- **Evidence 3 (context):** Guidance recommends risk-based screening of asymptomatic adults from age 30, earlier with risk factors. — *CPG 6th ed. Quick Reference Guide; The Star, 28 Oct 2026.*
+- **Evidence 1:** About 50% of people with diabetes are undiagnosed. — *MOH et al., CPG Management of T2DM, 6th ed. (Dec 2020), Quick Reference Guide.*
+- **Evidence 2:** About 84% of adults aged 18–29 with diabetes were undiagnosed in NHMS 2023. — *The Star, 2 Aug 2025 (quoting the MOH). Check against the original report.*
+- **Evidence 3:** In the US Diabetes Prevention Program, adults at high risk who reached ≥ 150 minutes of activity per week and 5–7% weight loss had 58% lower incidence of type 2 diabetes. The evidence is for high-risk adults, so this project does not claim the same effect for low-risk young adults. — *CDC National DPP: https://www.cdc.gov/diabetes-prevention/programs/what-is-the-national-dpp.html*
+- **Evidence 4:** About 79.6% of Malaysian adults had never heard of the Malaysian Healthy Plate in NHMS 2019. — *https://pmc.ncbi.nlm.nih.gov/articles/PMC10351725*
+- **Evidence 5:** Malaysian digital prevention studies (MyDiPP, PRIME, MY GODDESS) target high-risk, prediabetic or gestational-diabetes groups and use human coaches. — *clinicaltrials.gov NCT03997656; PRIME abstract (University of Sydney journals); Nutriweb MJN 29(1).*
+- **Evidence 6 (observed 22 Nov 2026):** The DIAG ModAsian FINDRISC page is plain-language with per-level advice, but its next step is DIAG testing in Vietnam and it requests a name and phone number. PeKa Sihat covers STR recipients and spouses aged 40+. — *https://diag.vn/en/risk-prediction-for-10-year-type-2-diabetes/; MyGov PeKa B40.*
+- **Hypotheses (not evidence):** H1 young adults do not know where to get tested; H2 many prefer Bahasa Malaysia; H3 users will keep up a two-minute weekly check-in (biggest risk; test first).
 
-## Initial Related Work (at least 3)
-1. **MyDiabeticRisk** — Ab Zayin, Zainol, Nohuddin, Mohamed (2023), *Zulfaqar Journal of Defence Science, Engineering & Technology* 6(2). Key limitation: needs clinical inputs (glucose, blood pressure) and returns a prediction without guideline-grounded, cited explanation.
-2. **ModAsian FINDRISC** — Lim HM, Chia YC, Koay ZL (2020), *Primary Care Diabetes* 14(5):494–500, doi:10.1016/j.pcd.2020.02.008; Doan L et al. (2023), *J Multidiscip Healthc* 16:439–449. Key limitation: score and category only; validation in adults (Vietnam study ≥ 25 years), so validity for ages 18–24 is not established.
-3. **CDC/ADA Prediabetes Risk Test** — https://www.cdc.gov/prediabetes/risktest/. Key limitation: US population and prediabetes outcome; not aligned to Malaysian guidance; no personalised explanation.
-4. **General-purpose AI chatbots.** Key limitation: may hallucinate; no guaranteed citation or scope control.
+## Initial Related Work
+1. **One-off risk tools:** ModAsian FINDRISC / DIAG (Lim 2020; Doan 2023), MyDiabeticRisk (Ab Zayin 2023), Malay ADA Diabetes Risk Test. Limitation: score and advice only; no tracking or coaching.
+2. **MyDiPP, PRIME, MY GODDESS:** app plus human coaching for high-risk or prediabetic groups. Limitation: not for young adults who are not yet at that stage; research pilots.
+3. **D'LITE** (Frontiers in Nutrition 2021): app with dietitian coaching for prediabetes. Limitation: clinical, not grounded in Malaysian guidance.
+4. **CDC National DPP:** year-long coached programme for prediabetes, designed for the US.
+5. **Malaysian Dietary Guidelines / PeKa Sihat:** authoritative but static.
+6. **General-purpose AI chatbots:** may hallucinate, invent diet advice, quote outdated eligibility.
 
 ## Engineering Gap / Limitation
-No reviewed approach combines a transparent deterministic risk calculation with plain-language explanations grounded in and cited to official health documents, under explicit medical-safety guardrails. This is a practical engineering gap, not a claim of research novelty.
+No reviewed approach combines a rule-based risk score, goal and progress engine; an AI coach grounded in cited Malaysian and international documents; on-device tracking without identity details; and a Malaysian route to testing, with health-safety guardrails, for young adults not yet prediabetic. Practical gap, not novelty. Real-world effect on behaviour is not tested.
 
 ## Initial Project Objectives
-- **O1:** To design a hybrid assistant that calculates diabetes risk with a rule-based calculator and explains it in simple language using official health documents.
-- **O2:** To develop it with retrieval, source citation, and strict medical-safety guardrails.
-- **O3:** To evaluate it in terms of explanation groundedness, safety, readability, and latency.
+- **O1:** To design a prevention habit tracker with a hybrid AI coach for Malaysian young adults.
+- **O2:** To develop it with retrieval, citation, on-device storage, a Malaysian pathway selector and strict health and wellbeing guardrails.
+- **O3:** To evaluate engine correctness, groundedness, safety, supportive tone, readability, usability and latency (not clinical outcomes).
 
 ## Target Users
-Young adults aged 18–35 in Malaysia (university students, early-career professionals) without a prior diabetes diagnosis.
+Young adults aged 18–35 in Malaysia (university students, early-career professionals) without a diabetes diagnosis.
 
-## Data Sources (at least 2)
-- **Source 1:** MOH et al., CPG Management of T2DM, 6th ed. (Dec 2020) — https://www.moh.gov.my (exact PDF URL to be recorded when downloaded)
-- **Source 2:** WHO Diabetes fact sheet — https://www.who.int/news-room/fact-sheets/detail/diabetes
-- **Source 3:** CDC/ADA Prediabetes Risk Test, about page — https://www.cdc.gov/prediabetes/risktest/about-the-test.html
-- **Calculator specification (not retrieval text):** Lim et al. 2020 (ModAsian FINDRISC scoring table).
+## Data Sources
+- **S01:** MOH et al., CPG Management of T2DM, 6th ed. (Dec 2020) — https://www.moh.gov.my (exact PDF URL to be recorded)
+- **S02:** WHO Diabetes fact sheet — https://www.who.int/news-room/fact-sheets/detail/diabetes
+- **S03:** MOH NCCFN, Malaysian Dietary Guidelines 2020 incl. Malaysian Healthy Plate — exact URL to be recorded
+- **S04:** ProtectHealth, PeKa Sihat — https://protecthealth.com.my/peka-b40-eng/
+- **S05:** MyGov, PeKa B40 — https://www.malaysia.gov.my/en/categories/aid-welfare-and-assistance/healthcare-aid/peka-b40
+- **Calculator specification:** Lim et al. 2020 (ModAsian FINDRISC scoring table).
 
 ## Similar to EduAdvisor
-Document-grounded Q&A over public PDFs; retrieval + citations + guardrails; evaluated on groundedness, safety and latency.
+Document-grounded Q&A over public documents; retrieval, citations, abstention and guardrails; evaluated on groundedness, safety and latency.
 
 ## Different from EduAdvisor
-- Adds a **deterministic calculator** whose output the language model may explain but never change.
-- Domain is **health**, so scope is narrowed to risk awareness and the safety controls are stricter (red-flag redirect, no diagnosis/treatment).
-- Primary output is a **risk explanation plus exactly one next step**, not open Q&A.
-- Collects **sensitive personal answers**, so privacy is a design driver (no identifiers, no storage beyond the session).
+- A **tracker**: user data is stored over time (on the device), with a goal and progress engine in code.
+- The AI **explains and coaches; it never computes** scores, progress or goals.
+- Domain is **health**: stricter scope (no diagnosis, no diet or weight-loss plans), and wellbeing safeguards for eating-disorder signals.
+- Handles **sensitive personal data**, so privacy is a design driver.
 
 ## Why this health project is acceptable under the Week 1 scoping rule
-The lab warns against medical diagnosis systems unless the scope is carefully constrained. This project (a) never diagnoses, (b) never recommends treatment, (c) restricts answers to retrieved official text, (d) redirects red-flag symptoms to a doctor, and (e) states on every result that only a blood test can diagnose. Residual risks are tracked in `docs/week2_requirements.md` (RAI1–RAI5).
+The system never diagnoses, never recommends treatment or calorie and weight-loss targets, answers only from retrieved official text, redirects red-flag symptoms to a doctor, and makes no claim that it prevents diabetes. Residual risks are tracked in `week2_requirements.md` (RAI1–RAI8).
 
-## Responsible AI Risks (at least 2)
-- **Risk 1 — Hallucination:** invents a threshold or advice → user acts on false medical information.
-- **Risk 2 — False reassurance / alarm:** "low risk" delays testing; "high risk" causes distress.
-- **Risk 3 — Privacy:** health history answers are sensitive; leakage to logs or third-party APIs harms the user.
-- **Risk 4 — Fairness / validity:** sex- and ethnicity-specific cut-offs, and limited validation for ages 18–24, can mislead some users.
+## Responsible AI Risks
+- **Hallucination:** invents a target, threshold, eligibility rule or food fact.
+- **Disordered eating and over-exercise:** a tracker with food and weight data can reinforce harmful behaviour; mitigated by no calorie or weight targets and a wellbeing safeguard.
+- **Privacy:** stored health habits and answers are sensitive.
+- **Over-reliance and outcome claims:** users may believe the app prevents diabetes or replaces a clinic visit.
+- **Demotivation and shame:** negative messages after missed weeks.
+- **Equity and fairness:** assuming eligibility or ability to pay; Western food examples; sex-specific cut-offs; limited validation for ages 18–24.

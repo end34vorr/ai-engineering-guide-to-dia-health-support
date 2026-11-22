@@ -6,26 +6,27 @@ Fields marked `[FILL]` are copied from your Colab output. Never type numbers you
 ## 1. Requirements served
 | Requirement | How this pipeline supports it |
 |---|---|
-| FR4 / RAI2 | Every chunk keeps `source_id`, `url`, `page`, `locator`, so later answers can cite a source. |
-| FR3 / FR5 / NFR2 | Clinical thresholds (HbA1c, glucose, BMI, waist cut-offs) must stay whole inside one chunk. |
+| FR7 / RAI2 | Every chunk keeps `source_id`, `url`, `page`, `locator`, so later answers can cite a source. |
+| FR3, FR6 / NFR2 | Numeric goal values and clinical thresholds (servings, minutes, HbA1c, glucose, BMI, waist) must stay whole inside one chunk. |
+| FR8 / NFR8 / RAI6 | Programme pages (S04, S05) carry URL and access date so pathway details can be shown with a source date and re-checked. |
 | NFR6 | Registry + manifests let one source be replaced and re-ingested without touching the others. |
-| RAI3 | Source documents contain no personal data; nothing user-related enters this pipeline. |
+| RAI3 | Source documents contain no personal data; no user or tracker data enters this pipeline. |
 
 ## 2. Selected sources
-S01 MoH CPG 6th ed. (PDF), S02 WHO fact sheet (print-PDF), S03 CDC risk-test page (print-PDF). Details: `week3_data_inventory.md`.
+S01 MoH CPG 6th ed. (PDF), S03 Malaysian Dietary Guidelines 2020 (PDF), S02 WHO fact sheet, S04 ProtectHealth PeKa Sihat and S05 MyGov PeKa B40 (print-PDFs of web pages). Details: `week3_data_inventory.md`.
 
 ## 3. Part B comparison (same input, two approaches)
 
 | Approach A: fixed-size 1000-char slices over the whole document | Approach B: page-aware sentence-packing (≤ 1000 chars, never crosses a page) | Observed evidence | Selected approach and trade-off |
 |---|---|---|---|
-| Course baseline; no page numbers | Keeps page number; splits at sentence ends | From Cell 5A1 table: chunks `[FILL]`; % with page A `[FILL]` vs B `[FILL]`; % mid-sentence start A `[FILL]` vs B `[FILL]`; % thresholds intact A `[FILL]` vs B `[FILL]` | **Expected choice: B**, because FR4/RAI2 need a page and FR3/FR5 need intact thresholds. Confirm with your numbers; if A wins on thresholds or B shows broken tables, say so. Accepted limitation: a sentence that spans a page break is split, and flattened tables may read badly. |
+| Course baseline; no page numbers | Keeps page number; splits at sentence ends | From Cell 5A1 table: chunks `[FILL]`; % with page A `[FILL]` vs B `[FILL]`; % mid-sentence start A `[FILL]` vs B `[FILL]`; % thresholds intact A `[FILL]` vs B `[FILL]` | **Expected choice: B**, because FR7/RAI2 need a page and FR3/FR6 need intact numeric targets and thresholds. Confirm with your numbers; if A wins on thresholds or B shows broken tables, say so. Accepted limitation: a sentence that spans a page break is split, and flattened tables may read badly. |
 
 ## 4. Chosen configuration
 `method = page-aware`, `chunk_size = 1000` characters, whitespace-only cleaning (headers, footers and tables are **not** removed automatically). Initial values; revisit when retrieval is evaluated in a later topic.
 
 ## 5. Accepted limitations
 - Scanned or figure-only pages produce no text; OCR is out of scope for V1 (pages listed by Cell 5A1 and Week 4 audit).
-- Print-PDFs of web pages have unstable page numbers, so S02/S03 cite by URL (`page_is_stable = False`).
+- Print-PDFs of web pages have unstable page numbers, so S02, S04 and S05 cite by URL (`page_is_stable = False`); record the date each page was saved.
 - Table content may be flattened into running text; V2 counts broken numeric thresholds but cannot judge table meaning.
 - Sentence splitting is a regular-expression heuristic, not a linguistic parser.
 
@@ -54,3 +55,7 @@ Redistribution rights for S01–S03 are **Not Verified**. The repository ignores
 ## 10. Two failure points annotated on the diagram
 1. **Scanned / near-empty page:** silent missing text → ungrounded answers. Response: flag pages, stop if an entire source is empty.
 2. **Split numeric threshold / garbled table:** wrong cut-off could be quoted. Response: V2 check counts broken thresholds; review affected chunks before retrieval.
+
+## 11. Added because of the Malaysian re-scope
+- S04/S05 are short web pages, so chunk-boundary differences will be small; the main Week 4 risk for them is **timeliness and contradiction between pages**, not chunking. S03 is the largest new risk for chunking, because serving-size tables and the Healthy Plate figure may flatten badly in text extraction.
+- Programme pages should be re-saved and re-ingested before each evaluation round (NFR8); the manifest checksum shows whether a page changed.

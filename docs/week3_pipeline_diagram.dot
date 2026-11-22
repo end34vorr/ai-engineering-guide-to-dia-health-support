@@ -4,7 +4,7 @@ digraph P {
   node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, margin="0.18,0.12", fillcolor="#C8E6C9"];
   edge [fontname="Helvetica", fontsize=10, color="#444444"];
 
-  src  [label="SOURCE\nS01 MoH CPG (PDF)\nS02 WHO fact sheet (print-PDF)\nS03 CDC risk-test page (print-PDF)\ndata/raw/  +  Cell 4B registry"];
+  src  [label="SOURCE\nS01 MoH CPG, S03 Malaysian Dietary Guidelines (PDF)\nS02 WHO, S04/S05 PeKa Sihat pages (print-PDF)\ndata/raw/  +  Cell 4B registry"];
   ing  [label="INGEST\nselect_source(exact file)\nSHA-256 of each source"];
   insp [label="INSPECT\npypdf extract per page\npages, chars, near-empty pages,\n2 sample pages"];
   prep [label="PREPARE / TRANSFORM\nclean whitespace →\npage-aware sentence-pack\n(≤1000 chars, never crosses a page)"];
