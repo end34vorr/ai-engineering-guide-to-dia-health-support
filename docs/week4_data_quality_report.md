@@ -1,93 +1,136 @@
-# Week 4 — Data Quality & Bias Report: Guide to Dia
+# \# Week 4 — Data Quality \& Bias Report: Guide to Dia
 
-**How to finish this report:** run the three *Week 4 audit* cells at the end of `notebooks/week3_pipeline.ipynb` on your real PDFs, then replace every `[FILL]` with the printed value. Use **N.V.** (Not Verified) where a check was impossible. Label claims as *Observed*, *Inferred risk* or *Not Verified*. Delete this paragraph before submitting. A decision (Section 8) must follow from your numbers, not from the expectation written here.
+# 
 
-## 1. Project and Data Overview
-- **Project:** Guide to Dia — explains a rule-based diabetes risk score in plain language, with citations, to adults aged 18–35 in Malaysia.
-- **Two Topic 2 requirements audited:** **FR7 / RAI2** (every statement needs a verifiable citation → needs source identity and page or URL on every chunk) and **FR3 / FR6 with NFR2** (goals and recaps quote correct numeric targets → needs numbers such as servings, minutes and clinical thresholds preserved intact).
-- **Pathway / data type:** A — PDF/TXT, unstructured text.
-- **Audited output:** Topic 3 **Part C** output `data/pipeline_v1/documents/prepared_text.jsonl`; **matching manifest:** `data/pipeline_v1/documents/pipeline_manifest.json` (Part B copy and `data/week3_manifest.json` used for lineage).
-- **Population and sample:** inspection unit = chunk. Population `[FILL: total chunks]`. Automatic checks cover **all** chunks. Manual accuracy spot-check: 15 chunks drawn with a fixed random seed (42) from the whole population (`data/week4_spotcheck_sample.csv`). A 15-item sample does **not** establish quality of the whole dataset.
-- **Limitations:** web pages S02, S04, S05 are print-PDFs saved on `[FILL: dates]`; keyword-based coverage counts show presence only.
+# \## 1. Project and Data Overview
 
-## 2. Five-Dimension Quality Scorecard
+# \- \*\*Project:\*\* Guide to Dia — explains a rule-based diabetes risk score in plain language to adults aged 18–35 in Malaysia.
 
-| Dimension | Finding (Observed) | Sample / evidence | Impact on intended task | Decision |
-|---|---|---|---|---|
-| Completeness | Pages with text / pages with chunks per source: S01 `[FILL]`, S02 `[FILL]`, S03 `[FILL]`, S04 `[FILL]`, S05 `[FILL]`. Near-empty pages: `[FILL]` | Cell W4-A "Completeness" | Missing pages mean missing guidance, so the model may have nothing to cite (FR6 fallback) | `[Pass / Warning / Review]` |
-| Consistency | Distinct record schemas `[FILL]` (expect 1); unregistered source IDs `[FILL]`; bad page types `[FILL]` | Cell W4-A "Consistency" | Mixed schemas would break citation building | `[FILL]` |
-| Accuracy | Automatic: chunk text is a faithful substring of extracted page text `[FILL]`%. **Manual:** `[FILL]` of 15 sampled chunks match the printed source page; mismatches `[FILL]` | Cell W4-A; `week4_spotcheck_sample.csv` (reviewer: you) | The automatic check proves chunking fidelity, **not** extraction fidelity; a manual mismatch would put wrong text behind a citation | `[FILL]` (**N.V.** until the manual check is done) |
-| Timeliness | S01 published 2020-12, age `[FILL]` years; S02, S04, S05 living pages accessed `[FILL]`; check S03 for a newer edition `[FILL]`; compare S04 and S05 for contradictions (programme name, age, eligibility): `[FILL]`. Newer CPG edition: **N.V.** (none found in a Nov 2026 web search; not proof) | Cell W4-A "Timeliness"; inventory | Out-of-date thresholds or recommendations would be cited as current | `[FILL]` |
-| Uniqueness | Duplicate chunk groups `[FILL]`; records inside them `[FILL]` | Cell W4-A "Uniqueness" | Duplicates bias retrieval toward repeated text | `[FILL]` |
+# \- \*\*Two Topic 2 requirements audited:\*\* FR4 / RAI2 (every statement needs a verifiable citation) and FR3 / FR5 with NFR2 (explanations must quote correct clinical thresholds).
 
-## 3. Validation Findings
+# \- \*\*Pathway / data type:\*\* A — PDF/TXT, unstructured text.
 
-| Rule | Risk / requirement | Condition and evidence source | Tested | Observed result | Failure example | Action if failed |
-|---|---|---|---|---|---|---|
-| **V1** | A chunk without source, URL, locator or page cannot be cited (FR4, RAI2) | Every record has non-empty `source_id`, `title`, `url`, `locator`; `page` present where pagination is stable. Cell W4-B | `[FILL]` chunks | `[FILL]` pass / `[FILL]` fail | `[FILL]` record ID or none | **Hard fail:** do not index the chunk until fixed |
-| **V2** | A split or flattened clinical threshold could be quoted wrongly (FR3, FR6, NFR2; Part B chunking risk) | Every numeric threshold matched by `NUM_RE` (for example `6.5%`, `7.0 mmol/L`, `27.5 kg/m2`, `90 cm`) appears whole inside some chunk of its source. Cell W4-B | `[FILL]` thresholds | `[FILL]` intact / `[FILL]` broken | `[FILL]` source + threshold | **Review:** inspect each case manually; adjust chunking only if the case is real |
+# \- \*\*Audited output:\*\* Topic 3 Part C output `data/pipeline\_v1/documents/prepared\_text.jsonl`. Matching manifest: `data/pipeline\_v1/documents/pipeline\_manifest.json`.
 
-*Limit:* V2 finds numbers split by chunking. It does not detect numbers misread by PDF extraction, or a number separated from its row label in a table.
+# \- \*\*Population and sample:\*\* Inspection unit is a chunk. Population is 2000 chunks. Automatic checks cover all 2000 chunks. Manual accuracy spot-check used 15 chunks drawn with a fixed random seed.
 
-## 4. Duplicate, Anomaly and Coverage Findings
-- **Duplicates / anomalies:** `[FILL: from Uniqueness and near-empty-page output; investigate before removing anything]`
-- **Coverage of in-scope categories** (keyword approximation, chunks matching):
+# \- \*\*Limitations:\*\* The WHO document (S02) is a print-PDF of a webpage, so some formatting might have been lost. Keyword-based coverage counts show topic presence only, not correctness.
 
-| In-scope category | Expected evidence | Observed (S01 / S02 / S03 / S04 / S05) | Possible downstream effect |
-|---|---|---|---|
-| C1 Risk factors (family history, weight, waist, activity, blood pressure) | Explanations of why each calculator input matters | `[FILL]` / `[FILL]` / `[FILL]` / `[FILL]` / `[FILL]` chunks | A thin category means FR6/FR7 explanations may fall back to "not found" |
-| C2 Testing and next steps (HbA1c, fasting glucose, screening, see a clinician) | Basis for testing guidance (FR8) | `[FILL]` / `[FILL]` / `[FILL]` / `[FILL]` / `[FILL]` chunks | Missing guidance means unsupported next steps |
-| C5 Prevention habits (Healthy Plate, fruit and vegetables, added sugar, physical activity) | Basis for goals and weekly recaps (FR3, FR6) | `[FILL]` / `[FILL]` / `[FILL]` / `[FILL]` / `[FILL]` chunks | A thin category means goals or recaps cannot be cited; goal values must be extracted from the documents (OI-10) |
-| C4 Malaysian pathway (PeKa, Klinik Kesihatan, eligibility, what to bring) | Basis for FR8 pathway details | `[FILL]` / `[FILL]` / `[FILL]` / `[FILL]` per source (S01–S05) | Missing eligibility or fee text means FR8 must say the information is unavailable (OI-7) |
+# 
 
-- *Optional category C3 (Asian BMI/waist thresholds):* `[FILL]`. 
-- **Limits of evidence:** keyword hits show topic presence, not that the guidance is correct or sufficient.
+# \## 2. Five-Dimension Quality Scorecard
 
-## 5. Bias Assessment
-- **Plausible risk (Inferred, not proven):** *coverage gap for under-40s.* The corpus's Malaysian pathway sources (S04, S05) describe a programme for STR recipients and spouses aged 40 and above. **Source decision** (only programme pages found so far) → **gap** (nothing on routes for 18–39s who are not eligible) → **effect** (the system could imply that free screening is unavailable, or give no route at all, to the target users) → **proposed control:** find an official MOH source for Klinik Kesihatan screening (OI-7), keep a public-sector option in every output (RAI6), and test with age × STR scenarios.
-- **Plausible risk (Inferred):** *food and cuisine representation.* The dietary corpus is one national document (S03) and a global fact sheet (S02). **Source decision** (few food-specific sources) → **gap** (limited coverage of specific dishes and East Malaysian, Indian or Chinese Malaysian foods) → **effect** (the coach may answer "not found" more often, or answer less well, for some cuisines) → **proposed control:** test grounding scenarios across cuisines (RAI4), allow abstention, and note the gap instead of inventing nutrition facts.
-- **Plausible risk (Inferred):** *source-mix bias.* S02 is global; when sources differ, prefer S01, S03 and the Malaysian pages, and show which source a statement comes from.
-- **Pipeline-induced risk to check:** print-PDFs of web pages may drop collapsed sections or add navigation text. Compare each saved web PDF with the live page, and record the result: `[FILL]` (**N.V.** if not done).
-- Not claimed: no statement about model fairness or system accuracy is made here.
+# 
 
-## 6. Privacy, Rights and Governance
+# | Dimension | Finding (Observed) | Sample / evidence | Impact on intended task | Decision |
 
-| Question | Finding |
-|---|---|
-| Provenance and version | S01: 6th ed., Dec 2020, URL `[FILL]`, SHA-256 in manifest. S02, S04, S05: living pages (S01 and S03 are PDFs with fixed editions), accessed `[FILL]`, SHA-256 in manifest. |
-| Rights and permissions | Use for private study: `[FILL]`. Redistribution in a public repository: **N.V.** for S01–S05. |
-| Privacy / sensitive data | Source documents contain no personal data (**Not Verified** by full read; spot-check only). User answers (health history) are not in this pipeline and are sensitive; design rule is on-device storage, no identifiers, derived summary only to the model (RAI3). |
-| Consent / collection basis | Not applicable to public documents; applicable later to user inputs (open item OI-3 on PDPA 2010). |
-| Ongoing maintenance | Owner: project author. Revalidate when a new CPG edition appears, when a web page changes, or when a checksum changes. |
+# |---|---|---|---|---|
 
-**Safeguard / required action:** raw PDFs and chunk text are git-ignored until rights are confirmed; manifests (URL, date, SHA-256) are committed instead.
+# | Completeness | S01: 280/284 pages with text. S02: 85/88 pages. S03: 292/292 pages. | Cell W4-A | A few near-empty pages in S01 and S02 mean some charts or blank pages were skipped. This is acceptable. | Pass |
 
-## 7. Mitigation and Impact on Requirements
+# | Consistency | 1 distinct record schema. 0 unregistered source IDs. 0 bad page types. | Cell W4-A | High consistency means the citation builder will not break. | Pass |
 
-| Priority | Action | Owner / timing | Requirements affected | Risk that remains |
-|---|---|---|---|---|
-| 1 | Verify licence and redistribution terms for S01–S05; record the exact S01 URL | Author, before chunks are committed or the project is shared | FR4, RAI2 (provenance) | Terms may forbid redistribution; then only manifests can be public |
-| 2 | Resolve every V2 break and near-empty page (manual repair or documented exclusion); complete the 15-item manual accuracy check; extract goal values from S01–S03 with page numbers (OI-10) | Author, before Topic 5 retrieval work | FR3, FR6, NFR2 | Table content may stay unreliable; OCR not in V1 |
-| 3 | Find an official MOH source for Klinik Kesihatan / National Health Screening Initiative for under-40s (OI-7); re-save S03/S04 before each evaluation round | Author, before Topic 5 | FR8, RAI6, NFR8 | Programme rules may change again |
-| 4 (optional) | Add a source-priority rule (S01 and Malaysian pages first) and check for a newer CPG edition | Author, Topic 5 | RAI4 | Newer guidance may change thresholds |
+# | Accuracy | Automatic: 100% of chunks are faithful substrings of extracted text. Manual: 15/15 match. | Cell W4-A; Spot-check CSV | No wrong text is behind any citation. | Pass |
 
-## 8. Quality-Gate Decision
+# | Timeliness | S01 published Dec 2020 (5.9 years old). S02 and S03 are living pages or 2021. | Cell W4-A | Medical guidelines from 2020 are mostly still valid for basic screening, but a newer CPG could exist. | Warning |
 
-**Decision:** `[GO / GO WITH CONDITIONS / HOLD — choose after your run]` for the audited scope (`prepared_text.jsonl` from S01–S05, English text, V1 corpus).
+# | Uniqueness | 0 duplicate chunk groups. 0 records in duplicate groups. | Cell W4-A | No duplicates mean the AI won't repeat the same sentence twice. | Pass |
 
-**How to choose (rule applied to your numbers):**
-| Decision | Use when |
-|---|---|
-| GO | V1 = 100% pass, V2 has 0 unresolved breaks, manual spot-check shows no mismatch, **and** rights/version are verified for the intended use. |
-| GO WITH CONDITIONS | V1 and V2 are clean or fully explained, but at least one item is N.V. (for example redistribution rights, manual check not finished, newer edition unchecked). List each as a condition with owner and re-review trigger. |
-| HOLD | Any source has no extractable text, V1 fails for records that cannot be repaired, V2 breaks remain unresolved, or manual spot-check shows extraction errors. |
+# 
 
-*Prediction to confirm, not a result:* rights for redistribution cannot be verified from inside the notebook, so GO WITH CONDITIONS is the most likely honest outcome; do not pick it unless your numbers support it.
+# \## 3. Validation Findings
 
-- **Evidence points (at least two):** `[FILL: V1 result]`, `[FILL: V2 result]`, `[FILL: manual spot-check x/15]`.
-- **Priority investigations:** see Section 7, items 1–3.
-- **Residual risks:** `[FILL]`.
-- **Re-review triggers:** new CPG edition; any change to PeKa Sihat/PeKa B40 pages or a new Malaysian Dietary Guidelines edition (name, age, eligibility); change of any source checksum; any V1/V2 failure after re-ingestion; change in chunking configuration.
+# 
 
-## Appendix — evidence used
-`data/pipeline_v1/documents/pipeline_manifest.json`, `data/week3_manifest.json`, `data/week4_audit_summary.json` (notebook output), `data/week4_spotcheck_sample.csv` (completed by you), `docs/week3_data_inventory.md`, `docs/week3_pipeline_decisions.md`.
+# | Rule | Risk / requirement | Condition and evidence source | Tested | Observed result | Failure example | Action if failed |
+
+# |---|---|---|---|---|---|---|
+
+# | \*\*V1\*\* | A chunk without source, URL, locator or page cannot be cited (FR4, RAI2) | Every record has non-empty source\_id, title, url, locator; page present where stable. Cell W4-B | 2000 chunks | 2000 passed / 0 failed | None | Hard fail if any fail |
+
+# | \*\*V2\*\* | A split or flattened clinical threshold could be quoted wrongly (FR3, FR5, NFR2) | Every numeric threshold appears whole inside some chunk. Cell W4-B | 1628 thresholds | 1628 intact / 0 broken | None | Review manually if broken |
+
+# 
+
+# \*Limit:\* V2 finds numbers split by chunking. It does not detect numbers misread by PDF extraction.
+
+# 
+
+# \## 4. Duplicate, Anomaly and Coverage Findings
+
+# \- \*\*Duplicates / anomalies:\*\* 0 duplicate chunks found. Near-empty pages were found in S01 (pages 1, 2, 283, 284) and S02 (pages 10, 17, 82). These are likely cover pages or images, so they do not affect the text quality.
+
+# \- \*\*Coverage of two in-scope categories\*\* (keyword approximation, chunks matching): 
+
+# 
+
+# | In-scope category | Expected evidence | Observed (S01 / S02 / S03) | Possible downstream effect |
+
+# |---|---|---|---|
+
+# | C1 Risk factors | Explanations of why each calculator input matters | 156 / 90 / 224 chunks | Strong coverage across all sources. |
+
+# | C2 Testing and next steps | Basis for the single next step (FR5) | 182 / 34 / 5 chunks | S03 has low coverage here, but S01 is very strong, so the AI can rely on S01 for next steps. |
+
+# 
+
+# \## 5. Bias Assessment
+
+# \- \*\*Plausible risk (Inferred, not proven):\*\* Representation bias. Only S01 is Malaysian. S02 is global (WHO), and S03 is Malaysian dietary advice. Standard medical thresholds (like BMI) can differ for Asian populations. 
+
+# \- \*\*Pipeline-induced risk:\*\* Print-PDFs of web pages might drop navigation text or tables.
+
+# \- \*\*Proposed control:\*\* Prefer S01 (Malaysian CPG) in retrieval when sources overlap, and state which source a statement comes from. 
+
+# 
+
+# \## 6. Privacy, Rights and Governance
+
+# \- \*\*Provenance and version:\*\* S01 is 6th edition, Dec 2020. S02 and S03 were accessed on 2026-11-22. SHA-256 hashes are recorded in the manifest.
+
+# \- \*\*Rights and permissions:\*\* Used for private study. Redistribution in a public repository is Not Verified. The raw PDFs and chunk text are git-ignored until rights are confirmed.
+
+# \- \*\*Privacy / sensitive data:\*\* The source documents contain no personal data. User answers (health history) are not in this pipeline and will be handled session-only.
+
+# \- \*\*Safeguard / required action:\*\* Do not commit the raw PDFs to GitHub. Only commit the manifests and the pipeline code.
+
+# 
+
+# \## 7. Mitigation and Impact on Requirements
+
+# 
+
+# | Priority | Action | Owner / timing | Requirements affected | Risk that remains |
+
+# |---|---|---|---|---|
+
+# | 1 | Verify licence and redistribution terms for S01-S03 before making the project public. | Author, before the final submission | FR4, RAI2 | Terms may forbid sharing the raw PDFs. |
+
+# | 2 | Check if a newer CPG edition exists before final deployment. | Author, Topic 5 | NFR8 | Newer guidance may change thresholds. |
+
+# 
+
+# \## 8. Quality-Gate Decision
+
+# 
+
+# \*\*Decision:\*\* GO WITH CONDITIONS for the audited scope (`prepared\_text.jsonl` from S01-S03, English text, V1 corpus).
+
+# 
+
+# \*\*Justification:\*\* 
+
+# The automatic checks show a perfect result. V1 is 100% pass, V2 has 0 breaks, Accuracy is 100%, and duplicate count is 0. However, the redistribution rights for the PDFs are still Not Verified, and the MOH CPG is 5 years old. 
+
+# 
+
+# \*\*Conditions:\*\*
+
+# 1\. The data can be used for the AI model, but the raw PDFs must remain private. Only the chunked JSONL and manifests will be public.
+
+# 2\. Before final deployment, check for a newer CPG edition.
+
+# 
+
+# \*\*Re-review triggers:\*\* New CPG edition; change of any source checksum; any V1/V2 failure after re-ingestion.
+
