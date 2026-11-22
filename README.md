@@ -1,62 +1,123 @@
 # Guide to Dia — A Diabetes-Prevention Habit Tracker with a Grounded AI Coach
 
-Guide to Dia helps young adults in Malaysia build habits linked to lower type 2 diabetes risk. It starts with a rule-based risk score, sets small weekly goals from Malaysian and WHO guidance, tracks a two-minute weekly check-in on the user's own device, and uses an AI coach that explains progress, answers questions and suggests one small next step, with every statement cited to an official document. Progress is always counted by code, never by the AI. It is a prevention-support tool. It does not diagnose diabetes, manage a diagnosed condition, set calorie or weight-loss targets, or claim that it prevents diabetes.
+Guide to Dia helps young adults in Malaysia build habits linked to lower type 2 diabetes risk. It starts with a rule-based risk score, sets small weekly goals from Malaysian and WHO guidance, tracks a two-minute weekly check-in on the user's own device and uses an AI coach that explains progress, answers questions and suggests one small next step, with every statement cited to an official document. Progress is always counted by code, never by the AI. It is a prevention-support tool. It does not diagnose diabetes, manage a diagnosed condition, set calorie or weight-loss targets or claim that it prevents diabetes.
 
 ## Problem Statement
-Young adults in Malaysia can already get a one-off diabetes risk score online, but a score does not change habits, and habits are what prevention depends on. Malaysia has national guidance for those habits, such as the Malaysian Healthy Plate ("Suku-Suku Separuh"), yet in NHMS 2019 about 80% of adults had never heard of it. The digital prevention programmes we found in Malaysia are research pilots for people who are already high-risk or prediabetic, and they rely on human coaches. A young adult who is not yet prediabetic has no trusted, everyday way to turn guideline advice into weekly action, to see their own progress, or to ask "is teh tarik really a problem?" and get an answer that cites a Malaysian source. Guide to Dia addresses this with a hybrid design: rules for scoring, goals and progress; retrieval-grounded AI for explanation and questions; safeguards for health and privacy; and a route to testing in Malaysia when the score or age calls for it.
+Young adults in Malaysia can already get a one-off diabetes risk score online, but a score does not change habits and habits are what prevention depends on. Malaysia has national guidance for those habits such as the Malaysian Healthy Plate "Suku-Suku Separuh", yet in NHMS 2019 about 80% of adults had never heard of it. The digital prevention programmes we found in Malaysia are research pilots for people who are already high-risk or prediabetic and they rely on human coaches. A young adult who is not yet prediabetic has no trusted, everyday way to turn guideline advice into weekly action, to see their own progress or to ask "is teh tarik really a problem?" and get an answer that cites a Malaysian source. Guide to Dia addresses this issue through a hybrid approach that combines rule-based scoring, goals and progress tracking with AI to provide explanations and answer questions based on reliable information. It also includes safeguards to protect users' health and privacy, as well as guidance on seeking medical testing in Malaysia when necessary based on the user's score or age.
 
 ## Evidence of the Problem
-- **Undiagnosed diabetes is common, and highest in the young.** About 50% of people with diabetes are undiagnosed (MOH et al., Clinical Practice Guidelines: Management of T2DM, 6th ed., Dec 2020, Quick Reference Guide). NHMS 2023 reportedly found about 84% of adults aged 18–29 with diabetes were undiagnosed (The Star, 2 Aug 2025, quoting the MOH; verify against the original report).
-- **Lifestyle change can prevent diabetes, but the strongest evidence is for people at high risk.** In the US Diabetes Prevention Program, adults at high risk who reached at least 150 minutes of physical activity per week and 5–7% weight loss had 58% lower incidence of type 2 diabetes (CDC; NIH). This evidence does not show the same effect for low-risk young adults, so this project supports guideline habits and does not claim to prevent diabetes.
-- **National dietary guidance is not reaching people.** In NHMS 2019, an estimated 79.6% of Malaysian adults had never heard of the Malaysian Healthy Plate (Suku-Suku Separuh), introduced in 2016 (PMC10351725).
-- **Malaysian digital prevention programmes target people already at high risk and use human coaches.** MyDiPP (adults 18–65, BMI ≥ 23 and high risk), PRIME (prediabetes, pharmacist coaches) and MY GODDESS (women with gestational diabetes) are research studies. The MyDiPP registry entry says a recent meta-analysis found almost no evidence for digital diabetes therapy outside developed countries. We found no publicly available Malaysian tool for primary prevention in young adults with grounded AI coaching (Not Verified: an app-store search was not done).
-- **Existing risk tools are one-off and not tied to Malaysian next steps (observed 22 Nov 2026).** The ModAsian FINDRISC page on DIAG is plain-language and gives advice per risk level, but its next step is booking DIAG tests in Vietnam and it asks for name and phone number. PeKa Sihat free screening covers STR recipients and spouses aged 40 and above, so most 18–35-year-olds are not eligible.
-- **Hypotheses to validate (not yet evidence):** H1 young adults do not know where to get tested or what it costs; H2 many would prefer Bahasa Malaysia; H3 users will keep up a two-minute weekly check-in. H3 is the biggest risk to the idea and is tested first with 5–10 target users.
+*   **High rate of undiagnosed diabetes among young adults.**
+    The Ministry of Health Clinical Practice Guidelines 2020 state that about 50 percent of people with diabetes are undiagnosed. A news report by The Star in August 2025 quoted the Ministry of Health stating that about 84 percent of adults aged 18 to 29 with diabetes were undiagnosed. This shows an urgent need for better awareness among young adults.
+
+*   **Lifestyle changes prevent diabetes, but only for high-risk groups.**
+    A study by the CDC and NIH found that high-risk adults who exercised 150 minutes a week and lost 5 to 7 percent of their weight had a 58 percent lower chance of getting type 2 diabetes. Because this evidence applies to high-risk people, this project focuses on building healthy habits rather than claiming to cure or prevent the disease.
+
+*   **Low public awareness of national dietary guidelines.**
+    The National Health and Morbidity Survey 2019 found that 79.6 percent of Malaysian adults had never heard of the Malaysian Healthy Plate, also known as Suku Suku Separuh. 
+
+*   **Existing Malaysian digital health programs are limited.**
+    Programs like MyDiPP, PRIME, and MY GODDESS are mainly research studies. They target high-risk individuals and rely on human coaches. A recent study also found very little evidence for digital diabetes therapy outside developed countries. Currently, there is no public Malaysian app using AI to help young adults prevent diabetes.
+
+*   **Existing risk tools do not provide local Malaysian next steps.**
+    The ModAsian FINDRISC calculator on the DIAG website asks for personal contact details and recommends blood tests in Vietnam. Additionally, the free PeKa Sihat screening is only for Sumbangan Tunai Rahmah recipients and their spouses aged 40 and above, excluding most young adults aged 18 to 35.
+
+*   **User behavior needs validation.**
+    Further testing with 5 to 10 target users is required to determine if young adults know where to get tested, their language preferences, and their likelihood of using the app weekly. 
 
 ## Initial Related Work / Existing Approaches
-- **One-off risk tools:** ModAsian FINDRISC and the DIAG web tool (Lim et al., Prim. Care Diabetes 14(5), 2020; Doan et al., J. Multidiscip. Healthc. 16, 2023), MyDiabeticRisk (Ab Zayin et al., 2023), and the Malay version of the ADA Diabetes Risk Test. They give a score and some advice, with no tracking, coaching or follow-up.
-- **Malaysian digital prevention pilots:** MyDiPP (UniSZA), PRIME (Monash University Malaysia) and MY GODDESS. They use apps plus human coaches for high-risk or prediabetic groups, so they do not address young adults who are not yet at that stage.
-- **Asian app-based lifestyle programme:** D'LITE (Frontiers in Nutrition, 2021), a randomised trial in adults with prediabetes and BMI ≥ 23, using an app with in-app dietitian coaching. It is clinical and not grounded in Malaysian guidance.
-- **CDC National Diabetes Prevention Program:** year-long coached lifestyle programme for people with prediabetes, designed for the US.
-- **Malaysian Dietary Guidelines and Healthy Plate materials; PeKa Sihat:** authoritative, but static documents and programmes, with no personal progress or follow-up Q&A.
-- **General-purpose AI chatbots:** flexible coaching but may hallucinate, quote outdated eligibility or invent diet advice, and have no guaranteed citation or scope control.
+*   **One-off risk calculators.**
+    Tools like ModAsian FINDRISC, the DIAG web tool, MyDiabeticRisk, and the Malay version of the ADA Diabetes Risk Test are useful. However, they only give a score and basic advice. They lack ongoing tracking, coaching, or follow-up features.
+
+*   **Malaysian digital prevention pilots.**
+    Local programs like MyDiPP, PRIME, and MY GODDESS use mobile apps combined with human coaches. Their main limitation is that they only target older, high-risk, or prediabetic groups. They do not address young adults who are not yet at that high-risk stage.
+
+*   **Asian app-based lifestyle programs.**
+    A program called D'LITE uses an app with in-app dietitian coaching. The limitation is that it is a clinical trial and is not grounded in official Malaysian health guidance.
+
+*   **International prevention programs.**
+    The CDC National Diabetes Prevention Program is a comprehensive year-long coached program. However, it is designed specifically for the United States population and may not align with Malaysian clinical guidelines.
+
+*   **Static government materials.**
+    Official resources like the Malaysian Dietary Guidelines, Healthy Plate materials, and the PeKa Sihat program are highly authoritative. However, they are static documents. They do not offer personal progress tracking or interactive follow-up questions.
+
+*   **General-purpose AI chatbots.**
+    While AI tools like ChatGPT are flexible, they are unsafe for medical topics. They often hallucinate, quote outdated eligibility rules, invent fake diet advice, and lack guaranteed citations or strict safety controls.
 
 ## Engineering Gap / Limitation
-No reviewed approach combines (a) a transparent rule-based risk score, goal and progress engine, (b) an AI coach that explains progress and answers questions from cited Malaysian and international documents, (c) on-device tracking that collects no identity or contact details, and (d) a Malaysia-specific route to testing, all under explicit health-safety guardrails for young adults who are not yet prediabetic. This is a practical engineering gap, not a claim of scientific novelty, and its effect on real behaviour is not tested in this project.
+Based on the review of existing approaches, no current app combines all the necessary features for young adults in Malaysia. This project fills that specific gap by bringing four elements together:
+
+*   **A transparent scoring and tracking system.** The app uses a simple rule-based calculator to give a risk score and track healthy habits, rather than just giving a one-off result.
+*   **An AI coach grounded in official documents.** The AI explains the user's progress and answers questions using cited Malaysian and international medical guidelines.
+*   **Strict privacy protection.** The tracking happens entirely on the user's device without collecting any names or contact details.
+*   **Local health routes.** The app provides specific guidance on where young adults in Malaysia can go for testing.
+
+All of these features are controlled by strict health-safety guardrails for users who are not yet prediabetic. This is a practical engineering gap. The project focuses on building a safe prototype, but the actual long-term effect on user behaviour is outside the scope of this study.
 
 ## Project Objectives
 - **O1:** To design a diabetes-prevention habit tracker for Malaysian young adults, with a rule-based risk score, goals and progress engine and a grounded AI coach.
-- **O2:** To develop it with retrieval over official documents, source citation, on-device data storage, a Malaysian pathway selector, and strict health and wellbeing guardrails.
+- **O2:** To develop it with retrieval over official documents, source citation, on-device data storage, a Malaysian pathway selector and strict health and wellbeing guardrails.
 - **O3:** To evaluate engine correctness, groundedness, safety, supportive tone, readability, usability and response time. Whether users actually reduce their diabetes risk is out of scope.
 
 ## Target Users
-Young adults aged 18–35 in Malaysia, mainly university students and early-career professionals, with no prior diabetes diagnosis.
+Young adults aged 18–35 in Malaysia with no prior diabetes diagnosis.
 
 ## Application Scope
-**Supported tasks:** complete a baseline risk score; receive small weekly goals; log a weekly check-in; see progress; get a weekly plain-language recap with one small next step; ask questions about habits, food, activity and testing; re-check risk every 6 months; see where to get tested in Malaysia; view, export and delete all stored data.
 
-**Out of scope:** diagnosis; managing diagnosed diabetes or prediabetes; medication, insulin or supplement advice; calorie, macro, fasting or weight-loss targets and personalised meal plans; type 1 diabetes, pregnancy or gestational diabetes; users under 18; emergency triage beyond "seek medical care promptly"; wearable integration, food-photo recognition and social features; claims that the app prevents diabetes. V1 is in English; Bahasa Malaysia is a stretch goal pending evidence for H2.
+The application is designed to help young adults build healthy habits. To achieve this, the system supports the following tasks:
+
+*   **Initial Assessment:** Complete a baseline diabetes risk score and view specific locations in Malaysia to get tested.
+*   **Weekly Tracking:** Receive small, manageable health goals and log a weekly check-in to track personal progress.
+*   **AI Coaching:** Get a simple weekly recap with one clear next step and ask the AI questions about food, physical activity and testing.
+*   **Maintenance:** Re-check and update the risk score every 6 months.
+*   **Data Privacy Control:** View, export or permanently delete all stored personal data at any time.
+
+## Out of Scope
+
+To ensure user safety and keep the project manageable, the system will **not** support the following:
+
+*   **Medical Diagnosis and Treatment:** The app will not diagnose diabetes, manage existing diabetes or prediabetes, or prescribe any medication, insulin or supplements.
+*   **Strict Diet and Weight Plans:** The app will not create personalised meal plans, calculate calories or macros or set strict weight-loss targets. It only gives general healthy eating tips based on official guidelines.
+*   **High-Risk Groups:** The app is not designed for type 1 diabetes, pregnancy, gestational diabetes or users under 18 years old.
+*   **Medical Emergencies:** The app will not handle emergency situations. It will only advise users to seek immediate medical care.
+*   **Advanced Tech Features:** There will be no smartwatch integration, food-photo recognition or social media features in this version.
+*   **Prevention Claims:** The app will not claim to prevent diabetes. It only aims to raise awareness and encourage healthy habits.
+*   **Language:** Version 1 will be in English only. A Bahasa Malaysia version may be added later if user testing shows it is needed.
 
 ## Main Features
-- Plain-language 9-question baseline risk score (rule-based ModAsian FINDRISC, no AI)
-- Starting weekly goals from guidance: physical activity, fruit and vegetables, sugary drinks, Healthy Plate meals
-- Two-minute weekly check-in saved on the user's own device
-- Progress, streaks and trends computed by code, not by the AI
-- AI coach: weekly recap, one small next step, answers with source references and dates
-- Abstention when the documents do not contain enough evidence
-- Six-monthly re-check and a Malaysian route to testing (Klinik Kesihatan, PeKa Sihat, private clinic) when triggered
-- Safeguards: red-flag symptoms, eating-disorder signals, no calorie or weight-loss targets, no identifiers, export and delete
+
+*   **Baseline Risk Score:** A simple 9-question calculator based on the ModAsian FINDRISC method to give users their starting risk level.
+*   **Weekly Health Goals:** Small, achievable goals based on official guidance, focusing on physical activity, eating vegetables and reducing sugary drinks.
+*   **2-Minute Weekly Check-in:** A quick weekly update that is saved privately on the user's own phone.
+*   **Progress Tracking:** Visual streaks and trends that are calculated normally to ensure 100 percent accuracy.
+*   **AI Health Coach:** An AI assistant that gives a weekly recap, suggests one small next step and answers questions with clear source references.
+*   **Honest Answers:** The AI will clearly state when it does not know the answer, rather than making things up.
+*   **Testing Guidance:** A prompt for a 6-month re-check, plus a guide on where to get tested in Malaysia such as Klinik Kesihatan or private clinics.
+*   **Strict Safety Controls:** Built-in rules to detect red-flag symptoms and eating disorder signals, a strict ban on calorie-counting advice and total user control to export or delete their data.
 
 ## Data Sources
-- S01: MOH et al., Clinical Practice Guidelines: Management of Type 2 Diabetes Mellitus, 6th ed. (Dec 2020) — https://www.moh.gov.my (exact PDF URL to be recorded)
-- S02: WHO, Diabetes fact sheet — https://www.who.int/news-room/fact-sheets/detail/diabetes
-- S03: National Coordinating Committee on Food and Nutrition, MOH, Malaysian Dietary Guidelines 2020, including the Malaysian Healthy Plate — exact URL and edition year to be recorded
-- S04: ProtectHealth, PeKa Sihat — https://protecthealth.com.my/peka-b40-eng/
-- S05: MyGovernment, PeKa B40 eligibility and procedure — https://www.malaysia.gov.my/en/categories/aid-welfare-and-assistance/healthcare-aid/peka-b40
-- Calculator specification (rules, not retrieved text): Lim et al. 2020, ModAsian FINDRISC — doi:10.1016/j.pcd.2020.02.008
-- Evidence only, not in the corpus: CDC National DPP — https://www.cdc.gov/diabetes-prevention/programs/what-is-the-national-dpp.html
 
-Still to identify: an official physical-activity guideline for adults (to ground the activity goal), and an official MOH source for Klinik Kesihatan and National Health Screening Initiative access for under-40s (Not Verified). S04 and S05 are living pages, so each is saved with its access date. Redistribution rights are not yet verified, so source PDFs and chunk text are git-ignored; manifests (URL, date, SHA-256) are committed instead.
+The AI knowledge base and project calculations rely on the following official documents:
+
+*   **S01: Ministry of Health Malaysia Clinical Practice Guidelines (Type 2 Diabetes).**
+    The 6th edition from December 2020. This is the primary document used to ground the AI's medical explanations and local screening advice.
+    Link: https://mems.my/wp-content/uploads/2021/03/CPG-T2DM_6th-Edition-2020_210226.pdf
+
+*   **S02: WHO Diabetes Fact Sheet.**
+    A global reference from the World Health Organization. Used to provide general facts about diabetes prevention.
+    Link: https://www.who.int/news-room/fact-sheets/detail/diabetes
+
+*   **S03: Malaysian Dietary Guidelines 2020.**
+    Official dietary guidance from the Ministry of Health, including the Malaysian Healthy Plate concept. Used for the app's food and habit advice.
+    Link: https://hq.moh.gov.my/nutrition/wp-content/uploads/2024/03/latest-01.Buku-MDG-2020_12Mac2024.pdf
+
+*   **Calculator Logic: ModAsian FINDRISC.**
+    The scoring table from Lim et al. (2020) is used strictly to build the rule-based calculator. It is not fed into the AI as text.
+    DOI: 10.1016/j.pcd.2020.02.008
+
+*   **Background Evidence: CDC National Diabetes Prevention Program.**
+    Used only as background research for the problem statement. It is not part of the AI's knowledge base.
+    Link: https://www.cdc.gov/diabetes-prevention/programs/what-is-the-national-dpp.html
+
 
 ## Requirements Summary
 Full details are in `docs/week2_requirements.md`.
@@ -108,16 +169,19 @@ Specific technologies will be selected in later topics. Current candidates:
 - Retrieval-Augmented Generation (RAG)
 
 ## Responsible AI
-- Count progress in code; the AI only explains it.
-- Answer only from retrieved passages, show source references and dates, and abstain when evidence is insufficient.
-- Never diagnose, never recommend treatment, and never claim the app prevents diabetes.
-- Set no calorie, weight-loss or fasting targets; respond to eating-disorder signals with a supportive redirect, not diet advice.
-- Redirect red-flag symptoms to prompt medical care.
-- Collect no names, phone numbers or ID numbers; keep tracker data on the device with export and delete; send only a derived summary to any external model API.
-- Keep the tone supportive and never shame missed weeks.
-- Do not assume the user can pay or is eligible for a programme; always include a public-sector option and tell users to confirm with the provider.
-- Disclose the limits of validation for ages 18–24 and use sex-specific thresholds.
-- Record document titles, versions, URLs, access dates and checksums, and re-check programme pages regularly.
+
+To ensure the app is safe and ethical, the following rules are strictly applied:
+
+*   All risk scores and progress tracking are calculated using standard code. The AI is only used to explain the results in simple words.
+*   The AI will only answer using the provided official documents. It must always show citations and dates and it will honestly say when it does not have enough evidence to answer.
+*   The app will never diagnose diabetes, recommend medical treatment or claim to prevent the disease. 
+*   There will be no strict calorie counting, weight-loss or fasting targets. If the app detects signs of an eating disorder, it will provide a supportive message and redirect the user, rather than giving diet advice.
+*   If a user mentions dangerous symptoms, the app will immediately prompt them to seek medical care.
+*   The app will not collect names, phone numbers or IC numbers. All tracking data stays privately on the user's device and can be deleted anytime. Only anonymous summaries are sent to the AI model.
+*   The AI will always be encouraging and will never shame users for missing a weekly check-in.
+*   The app will always include free options like Klinik Kesihatan and will not assume the user can pay for private clinics.
+*   The app will clearly state that the risk tools are less validated for users aged 18 to 24 and it will use accurate thresholds for different sexes.
+*   All document versions, links and access dates will be recorded in the system and checked regularly to ensure the medical advice is not outdated.
 
 ## Documentation
 | File | Description |
