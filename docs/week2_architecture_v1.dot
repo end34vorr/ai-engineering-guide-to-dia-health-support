@@ -1,0 +1,45 @@
+digraph G {
+  rankdir=LR; fontname="Helvetica"; labelloc=t; fontsize=20; nodesep=0.45; ranksep=0.7; pad=0.4;
+  label="Guide to Dia — V1 Conceptual Architecture (labelled by function, not technology)";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, margin="0.18,0.12"];
+  edge [fontname="Helvetica", fontsize=10, color="#444444"];
+
+  user  [label="User\n(young adult, 18–35)", fillcolor="#E0E0E0"];
+  ui    [label="Application Interface\nplain-language questions +\n“what does this mean?” help\n(FR1, FR8)", fillcolor="#E0E0E0"];
+  in_ctl [label="Input Scope / Safety Control\nout-of-scope, red-flag symptoms,\nidentifier blocking\n(FR7, RAI1, RAI3)", fillcolor="#FFD9A8"];
+  calc  [label="Rule-based Risk Calculator\npublished scoring table, deterministic\nscore + factor breakdown\n(FR2, NFR3)", fillcolor="#BBD7F5"];
+  kb    [label="Knowledge Source\nofficial health documents\n(MoH CPG, WHO, CDC)\n+ source metadata", fillcolor="#C8E6C9"];
+  prep  [label="Data Preparation\nextract → clean → chunk\nper page + lineage\n(Week 3 pipeline)", fillcolor="#C8E6C9"];
+  ret   [label="Knowledge Access\nfind passages relevant to\nthe user's risk factors / category\n(FR3, FR4, NFR2)", fillcolor="#BBD7F5"];
+  llm   [label="Language Model Service\nexplain in simple words,\none next step, from passages only\n(FR3, FR5, FR6, NFR4)", fillcolor="#BBD7F5"];
+  out_ctl [label="Output Safety / Citation Control\ncitation present + supports claim,\nno diagnosis / treatment, tone check\n(FR4, FR6, RAI1, RAI2, RAI5)", fillcolor="#FFD9A8"];
+  resp  [label="Response\nscore + category, plain explanation,\ncitations, ONE next step, disclaimer", fillcolor="#E0E0E0"];
+  eval  [label="Evaluation Point\ncurated test sets, latency log,\nthumbs up/down (no identifiers)\n(Topic 2 Part B criteria)", fillcolor="#D9C7F0"];
+
+  user -> ui [label="answers"];
+  ui -> in_ctl [label="user input"];
+  in_ctl -> calc [label="validated answers"];
+  in_ctl -> resp [label="refuse / redirect", style=dashed, color="#C0392B", fontcolor="#C0392B"];
+  calc -> ret [label="score, category,\nfactor list"];
+  prep -> kb [label="prepared chunks"];
+  kb -> ret [label="documents"];
+  ret -> llm [label="passages +\nsource IDs"];
+  calc -> llm [label="score (read-only)"];
+  llm -> out_ctl [label="draft explanation"];
+  out_ctl -> resp [label="approved text"];
+  out_ctl -> llm [label="reject → retry once /\nfallback text", style=dashed, color="#C0392B", fontcolor="#C0392B"];
+  resp -> ui [label="display"];
+  ui -> user [label="result"];
+  out_ctl -> eval [style=dotted, label="logs"];
+  in_ctl -> eval [style=dotted];
+  llm -> eval [style=dotted, label="latency"];
+
+  subgraph cluster_legend { label="Colour key"; fontsize=11; style="rounded"; color="#999999";
+    l1 [label="Data / pipeline", fillcolor="#C8E6C9", fontsize=10];
+    l2 [label="Model / AI / calculator", fillcolor="#BBD7F5", fontsize=10];
+    l3 [label="Guardrails & safety", fillcolor="#FFD9A8", fontsize=10];
+    l4 [label="Evaluation & monitoring", fillcolor="#D9C7F0", fontsize=10];
+    l5 [label="User interface", fillcolor="#E0E0E0", fontsize=10];
+    l1 -> l2 -> l3 -> l4 -> l5 [style=invis];
+  }
+}

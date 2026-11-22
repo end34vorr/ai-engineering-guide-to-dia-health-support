@@ -1,0 +1,14 @@
+# Source documents: redistribution rights NOT verified (MoH / WHO / CDC). Keep local; record URL + SHA-256 instead.
+data/raw/*
+!data/raw/.gitkeep
+
+# Prepared chunks contain verbatim source text. Remove these two lines ONLY after rights are verified.
+data/processed/*.jsonl
+data/pipeline_v1/**/*.jsonl
+
+# Secrets and local noise
+.env
+*.key
+.ipynb_checkpoints/
+__pycache__/
+.DS_Store

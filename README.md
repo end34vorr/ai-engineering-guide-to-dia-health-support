@@ -15,7 +15,7 @@ Many young adults in Malaysia do not know they might be at risk of Type 2 Diabet
 3. General AI Chatbots. The limitation is they hallucinate and make up fake medical advice which is very dangerous.
 
 ## Engineering Gap and Limitation
-There is a need for a hybrid system. A simple rule based calculator combined with a RAG based AI assistant. The AI acts like a medical translator. It explains the risk in simple words, cites official guidelines, and gives one clear action step while keeping the user safe.
+There is a need for a hybrid system. A simple rule based calculator combined with a RAG based AI assistant. The AI acts like a medical translator. It explains the risk in simple words, cites official guidelines and gives one clear action step while keeping the user safe.
 
 ## Project Objectives
 1. To design a hybrid AI assistant that calculates diabetes risk and explains it using simple language and official health documents.

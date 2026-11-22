@@ -1,120 +1,53 @@
-Week 1 Project Scope — Guide to Dia
-
-
-
-\## Project Name and Domain
-
-Project Name: Guide to Dia — AI Diabetes Risk \& Screening Recommender
-
-Domain: Health Education / Public Health Screening Support
-
-
-
-\## Problem Statement
-
-Many young adults in Malaysia do not know they might be at risk of Type 2 Diabetes. Existing calculators use medical terms like second degree relatives and only give you a scary score without explaining what to do next. Because it is too confusing, people just give up. Guide to Dia solves this by using AI to translate the medical jargon into simple, empowering words and giving you one clear next step.
-
-
-
-\## Evidence of the Problem
-
-Evidence 1: The Malaysian Clinical Practice Guidelines (CPG) state that \~50% of people with diabetes are undiagnosed. These highlighting the need for better screening awareness among the public.
-
-Source / citation: Malaysian CPG on Management of Type 2 Diabetes (6th Edition).
-
-
-
-Evidence 2: Existing risk calculators like ModAsian FINDRISC use clinical terminology such as "2nd degree relative" or "waist circumference" which creates a difficulty for laypeople and young adults that do not understand.
-
-Source / citation: ModAsian FINDRISC Online Calculator user interface; CDC Prediabetes Risk Test documentation.
-
-
-
-\## Initial Related Work / Existing Approaches
-
-
-
-Study / solution 1: MyDiabeticRisk (2023) — A web-based application developed to predict early-stage diabetes risk using four factors (Glucose, Blood Pressure, BMI, and Age) via a Logistic Regression model.
-
-Source / citation: Ab Zayin et al. (2023), Zulfaqar Journal of Defence Science, Engineering \& Technology.
-
-Key limitation: It is an academic web prototype that calculates a risk percentage. It does not offer conversational explanations and does not translate medical terms into simple language.
-
-
-
-Study / solution 2: ModAsian FINDRISC — A validated clinical questionnaire used to calculate a 10-year Type 2 Diabetes risk score for Asian adults.
-
-Source / citation: Primary care validation study (2020) — https://pubmed.ncbi.nlm.nih.gov/32147094/
-
-Key limitation: It is a static questionnaire. It does not explain why specific risk factors matter nor does it guide the user on what to do next.
-
-
-
-Study / solution 3: General AI Chatbots
-
-Source / citation: chat.openai.com
-
-Key limitation: They are dangerous for medical queries because they hallucinate. They cannot be trusted to provide accurate clinical screening guidelines and lack strict safety guardrails.
-
-
-
-\## Engineering Gap / Limitation
-
-Existing calculators provide a numerical score using medical jargon without conversational context while general AI models are too risky for health topics. There is a gap for a hybrid system which is a rule-based risk calculator combined with a RAG-based AI assistant that acts as a medical translator that explaining the risk in simple terms and citing official clinical guidelines like CPG, CDC and WHO to recommend screening with strict safety guardrails.
-
-
-
-\## Initial Project Objectives
-
-O1: To design a hybrid AI assistant that calculates diabetes risk and explains it in simple term and non-medical language using official health documents.
-
-O2: To develop the solution with retrieval, source citation and strict medical safety guardrails.
-
-O3: To evaluate the solution based on explanation groundedness, safety and latency.
-
-
-
-\## Target Users
-
-Young adults aged 18–35 in Malaysia.
-
-
-
-\## Data Sources
-
-Source 1: CDC Prediabetes Risk Test Guidelines — https://www.cdc.gov/prediabetes/
-
-Source 2: Malaysian Clinical Practice Guidelines (CPG) on Type 2 Diabetes (6th Edition) — http://www.moh.gov.my
-
-Source 3: WHO Diabetes Fact Sheet \& Screening Guidelines — https://www.who.int/news-room/fact-sheets/detail/diabetes
-
-Source 4: ModAsian FINDRISC Risk Calculator Documentation — https://diag.vn/en/risk-prediction-for-10-year-type-2-diabetes/
-
-
-
-\## Comparison with EduAdvisor
-
-Similar to EduAdvisor: Both take structured user input and recommend a "next step." Both use document-grounded AI to explain recommendations. Both require guardrails to prevent hallucination and out-of-scope advice.
-
-Different from EduAdvisor: EduAdvisor provides academic advice (low risk if wrong). Guide to Dia deals with health data (high risk if wrong). Therefore, Guide to Dia requires much stricter Responsible AI guardrails: it must never diagnose a disease, never prescribe medicine, and always redirect to a real doctor. Furthermore, Guide to Dia applies behavioral science (Fogg Model) to reduce friction, focusing on empowering insights and actionable habits rather than just giving a dense academic answer.
-
-
-
-\## Responsible AI Risks
-
-Risk 1 — Medical Diagnosis (High Risk): The user might treat the AI's recommendation as a medical diagnosis.
-
-Mitigation idea: Implement a hardcoded guardrail: The AI must always state "I am an AI, not a doctor. Please consult a clinic for a real diagnosis." It must never say "You have diabetes."
-
-
-
-Risk 2 — Hallucination of Medical Advice:\*\* The AI might hallucinate a fake cure or wrong test.
-
-Mitigation idea: RAG strictly grounds the AI in the CPG, CDC, and WHO documents. Every response must include an inline citation. If the answer is not in the documents, it says "Please consult a doctor."
-
-
-
-Risk 3 — Privacy: Users inputting sensitive health data (Age, BMI, Blood Pressure).
-
-Mitigation idea: The system must not store or transmit personal health data. The risk calculation will be done in-memory.
-
+# Week 1 — Project Scope: Guide to Dia
+
+**Project Name:** Guide to Dia
+**Domain:** Public health / preventive health education (type 2 diabetes risk awareness)
+
+## Problem Statement
+Young adults in Malaysia often do not know they may be at risk of type 2 diabetes. Existing risk tools give a score without explaining why a factor matters or what to do next, and general chatbots may invent medical facts. Guide to Dia combines a deterministic rule-based calculator with a retrieval-grounded AI that explains the result in simple words, cites official documents, and gives one next step.
+
+## Evidence of the Problem
+- **Evidence 1:** About 50% of people with diabetes are undiagnosed. — *MOH et al., CPG Management of T2DM, 6th ed. (Dec 2020), Quick Reference Guide, key messages.*
+- **Evidence 2:** About 84% of Malaysian adults aged 18–29 with diabetes were undiagnosed in NHMS 2023. — *The Star, "One in six Malaysians are diabetic, many unaware", 2 Aug 2025 (quoting the MOH Disease Control Division). Check the figure against the original NHMS 2023 report before the final proposal.*
+- **Evidence 3 (context):** Guidance recommends risk-based screening of asymptomatic adults from age 30, earlier with risk factors. — *CPG 6th ed. Quick Reference Guide; The Star, 28 Oct 2026.*
+
+## Initial Related Work (at least 3)
+1. **MyDiabeticRisk** — Ab Zayin, Zainol, Nohuddin, Mohamed (2023), *Zulfaqar Journal of Defence Science, Engineering & Technology* 6(2). Key limitation: needs clinical inputs (glucose, blood pressure) and returns a prediction without guideline-grounded, cited explanation.
+2. **ModAsian FINDRISC** — Lim HM, Chia YC, Koay ZL (2020), *Primary Care Diabetes* 14(5):494–500, doi:10.1016/j.pcd.2020.02.008; Doan L et al. (2023), *J Multidiscip Healthc* 16:439–449. Key limitation: score and category only; validation in adults (Vietnam study ≥ 25 years), so validity for ages 18–24 is not established.
+3. **CDC/ADA Prediabetes Risk Test** — https://www.cdc.gov/prediabetes/risktest/. Key limitation: US population and prediabetes outcome; not aligned to Malaysian guidance; no personalised explanation.
+4. **General-purpose AI chatbots.** Key limitation: may hallucinate; no guaranteed citation or scope control.
+
+## Engineering Gap / Limitation
+No reviewed approach combines a transparent deterministic risk calculation with plain-language explanations grounded in and cited to official health documents, under explicit medical-safety guardrails. This is a practical engineering gap, not a claim of research novelty.
+
+## Initial Project Objectives
+- **O1:** To design a hybrid assistant that calculates diabetes risk with a rule-based calculator and explains it in simple language using official health documents.
+- **O2:** To develop it with retrieval, source citation, and strict medical-safety guardrails.
+- **O3:** To evaluate it in terms of explanation groundedness, safety, readability, and latency.
+
+## Target Users
+Young adults aged 18–35 in Malaysia (university students, early-career professionals) without a prior diabetes diagnosis.
+
+## Data Sources (at least 2)
+- **Source 1:** MOH et al., CPG Management of T2DM, 6th ed. (Dec 2020) — https://www.moh.gov.my (exact PDF URL to be recorded when downloaded)
+- **Source 2:** WHO Diabetes fact sheet — https://www.who.int/news-room/fact-sheets/detail/diabetes
+- **Source 3:** CDC/ADA Prediabetes Risk Test, about page — https://www.cdc.gov/prediabetes/risktest/about-the-test.html
+- **Calculator specification (not retrieval text):** Lim et al. 2020 (ModAsian FINDRISC scoring table).
+
+## Similar to EduAdvisor
+Document-grounded Q&A over public PDFs; retrieval + citations + guardrails; evaluated on groundedness, safety and latency.
+
+## Different from EduAdvisor
+- Adds a **deterministic calculator** whose output the language model may explain but never change.
+- Domain is **health**, so scope is narrowed to risk awareness and the safety controls are stricter (red-flag redirect, no diagnosis/treatment).
+- Primary output is a **risk explanation plus exactly one next step**, not open Q&A.
+- Collects **sensitive personal answers**, so privacy is a design driver (no identifiers, no storage beyond the session).
+
+## Why this health project is acceptable under the Week 1 scoping rule
+The lab warns against medical diagnosis systems unless the scope is carefully constrained. This project (a) never diagnoses, (b) never recommends treatment, (c) restricts answers to retrieved official text, (d) redirects red-flag symptoms to a doctor, and (e) states on every result that only a blood test can diagnose. Residual risks are tracked in `docs/week2_requirements.md` (RAI1–RAI5).
+
+## Responsible AI Risks (at least 2)
+- **Risk 1 — Hallucination:** invents a threshold or advice → user acts on false medical information.
+- **Risk 2 — False reassurance / alarm:** "low risk" delays testing; "high risk" causes distress.
+- **Risk 3 — Privacy:** health history answers are sensitive; leakage to logs or third-party APIs harms the user.
+- **Risk 4 — Fairness / validity:** sex- and ethnicity-specific cut-offs, and limited validation for ages 18–24, can mislead some users.

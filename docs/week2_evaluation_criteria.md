@@ -1,38 +1,13 @@
-\# Evaluation Criteria for Guide to Dia
+# Evaluation Criteria — Guide to Dia
 
+Flow: Objective / Requirement → Evaluation Criterion → Measurement Method → Metric → Threshold → User / Business Outcome.
+Thresholds are initial values; they are revisited after the first measurement round (see `week2_requirements.md`).
 
-
-\## Evaluation Table
-
-
-
-| Objective and Requirement ID | Evaluation Criterion | Capability Bucket | Measurement Method | Metric | Threshold | User and Business Outcome |
-
+| Objective / Requirement ID | Evaluation Criterion | Capability Bucket | Measurement Method | Metric | Threshold | User / Business Outcome |
 |---|---|---|---|---|---|---|
-
-| O1 and FR1 | Risk Calculation Accuracy | Domain specific capability | Test 20 predefined user profiles against the official CDC scoring logic. | Correct calculation rate | 100 percent | Users get the exact same score as standard clinical tools. |
-
-| O2 and RAI3 | Source Citation and Grounding | Instruction following capability | Inspect AI responses to ensure every medical claim has a citation from the CPG or WHO documents. | Citation presence rate | 100 percent | Users can trust the advice because they can verify it. |
-
-| O2 and RAI1 | Medical Safety and Refusal | Instruction following capability | Test the system with 20 queries asking for a direct diagnosis or fake cures. | Refusal and redirect success rate | 100 percent | Prevents medical harm and protects the app from legal trouble. |
-
-| O3 and NFR1 | Response Latency | Cost and latency | Measure the time taken from user input to final AI response. | p90 latency | Less than 3000 ms | Users do not get bored and leave the app while waiting. |
-
-| O1 and FR3 | Jargon Translation | Generation capability | Evaluate if the AI can explain terms like second degree relative in simple words. | Clarity rubric score | Meets the plain English criterion | Young adults can understand the risk without needing a medical dictionary. |
-
-
-
-\## Reflection Part B
-
-
-
-\*\*Question\*\*
-
-Which evaluation criterion is most important for determining whether your AI application will be useful to its intended users? Why?
-
-
-
-\*\*Answer\*\*
-
-For me the most important criterion is Medical Safety and No Diagnosis which is RAI1. If this app accidentally tells a young person that they are safe when they actually have high risk factors, or if it suggests a fake cure, it could cause real harm. People will only use a health app if they trust it completely. If the app acts like a real doctor and makes a mistake, users will delete it immediately. So making sure the AI knows its limits and always redirects to a real clinic is the most important thing for this app to be useful.
-
+| O1 / FR2 / NFR3 | Calculator correctness | Domain-specific capability | Run ≥ 30 test vectors (boundaries, both sexes) against a hand-computed reference from the published table. | Matching score and category (%) | 100% | Users see a risk result they can trust to follow the published tool. |
+| O1, O3 / FR3 / NFR2 | Explanation groundedness | Domain-specific capability | Score ≥ 40 scenario explanations claim-by-claim as supported / unsupported by the retrieved passages. | Supported-claim rate; unsupported numeric thresholds | ≥ 90%; 0 | Users are not given invented medical facts. |
+| O2 / FR4 / RAI2 | Citation presence and support | Instruction-following capability | Inspect responses for a citation on each document-derived statement; check the cited page supports it. | Citation presence; citation-support match | 100%; ≥ 95% | Users can verify advice against official documents. |
+| O2 / FR7 / RAI1 | Out-of-scope refusal and red-flag redirect | Instruction-following capability | Run ≥ 30 out-of-scope prompts and ≥ 10 red-flag symptom prompts. | Refusal-and-redirect rate; red-flag redirect rate | ≥ 95%; 100% | Users with symptoms are sent to care; the system never plays doctor. |
+| O1 / FR3, FR5 / NFR4 | Plain-language clarity | Generation capability | Compute Flesch–Kincaid grade of each explanation; two raters check the one-next-step rule on a 20-item sample. | Share at grade ≤ 8; one-next-step rate | ≥ 90%; 100% | Young adults understand the result and know what to do. |
+| O3 / NFR1 | Response latency | Cost and latency | Time end-to-end on ≥ 50 scenarios; time the calculator alone. | p90 end-to-end; p90 calculator | ≤ 8,000 ms; ≤ 1,000 ms | Users do not abandon the session while waiting. |

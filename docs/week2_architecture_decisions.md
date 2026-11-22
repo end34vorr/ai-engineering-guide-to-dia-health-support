@@ -1,43 +1,45 @@
-# V1 Architecture Decisions and Traceability for Guide to Dia
+# Architecture Decisions & Traceability — Guide to Dia
 
-## 1. Architecture Needs
+Diagram: `docs/week2_architecture_v1.png` (source: `week2_architecture_v1.dot`). Components are labelled by function; technologies are chosen in later topics.
 
-Based on our requirements the simple architecture is not enough. We need specific components.
+## Starting point (Step C1)
+Simplest flow: **User → Application → AI capability → Response.** A bare language model fails several requirements: it cannot guarantee the score (FR2/NFR3), cannot cite (FR4/RAI2), and has no scope control (FR7/RAI1). Components were added only to close those gaps.
 
-| Requirement ID | What does the requirement need | Architecture Response |
+## Architecture needs from requirements (Step C2)
+
+| Requirement ID | What the requirement needs | Architecture response |
 |---|---|---|
-| FR1 | Calculate a risk score using user data like Age and BMI. | Rule Based Calculator component to do the math accurately. |
-| FR2 and RAI3 | Explain the risk using official medical guidelines. | Knowledge Source containing CDC, CPG and WHO documents. Plus a retrieval component. |
-| RAI1 | Refuse to diagnose and prevent medical harm. | Scope and Safety Control component to filter out dangerous medical queries. |
-| FR3 | Translate medical jargon into simple words. | Language Model Service to process text and rewrite it in plain English. |
+| FR2 / NFR3 | The score must match the published table exactly. | Rule-based Risk Calculator, separate from the language model. |
+| FR3 / FR4 / NFR2 / RAI2 | Explanations grounded in, and cited to, official documents. | Knowledge Source + Data Preparation + Knowledge Access (retrieval with source metadata). |
+| FR6 | Decline when there is no supporting evidence. | Knowledge Access returns "no passage"; Language Model Service must fall back. |
+| FR7 / RAI1 | Refuse out-of-scope requests; redirect red-flag symptoms. | Input Scope / Safety Control before the calculator. |
+| RAI1 / RAI2 / RAI5 | No diagnosis words, citations present and supporting, calm tone. | Output Safety / Citation Control after the model. |
+| RAI3 | No identifiers; no retained answers. | Identifier blocking in Input Control; session-only handling; only derived features passed to the model. |
+| NFR1 / NFR7 | Meet latency; survive failures. | Calculator result shown independently of the model path; fallback text on model/retrieval failure. |
+| Evaluation (Part B) | Evidence for each criterion. | Evaluation Point receiving logs and latency (no identifiers). |
 
-## 2. Architecture Decision Records
+## Architecture Decision Records
 
-**Decision 1 Include Dynamic Knowledge Access or RAG**
-Requirement or Constraint. Answers must be grounded in official clinical guidelines and must not hallucinate medical facts.
-Alternatives Considered. Base model only or static web search.
-Selected Option. Dynamic knowledge access using RAG.
-Trade off Accepted. More system complexity and slightly higher latency but much better safety and traceability.
+| Decision | Requirement / Constraint | Alternatives Considered | Selected Option | Trade-off Accepted |
+|---|---|---|---|---|
+| **ADR-1** Separate deterministic calculator from the language model | FR2, NFR3 (100% match to published table) | LLM computes the score; trained ML model on a public dataset; rule-based calculator | Rule-based calculator; model receives the score read-only | Limited to the published questionnaire and its categories; no personalisation beyond it. |
+| **ADR-2** Include knowledge access with source metadata | FR3, FR4, FR6, NFR2, RAI2 | Base model only; static FAQ text; retrieval over prepared documents | Retrieval over prepared official documents with source ID, URL and page | More complexity and latency; depends on document quality (audited in Topic 4). |
+| **ADR-3** Explicit output control after generation | RAI1, RAI2, RAI5 | Prompt instructions only; explicit post-generation check | Explicit output safety / citation control with one retry then fallback text | Possible false rejections and extra latency (NFR1). |
+| **ADR-4** Session-only handling, no accounts | RAI3, PDPA open item OI-3 | Accounts with history; session-only | Session-only | Cannot show progress over time or re-contact users; simpler privacy story. |
 
-**Decision 2 Include Explicit Scope and Safety Control**
-Requirement or Constraint. The system must never diagnose diabetes or give medical treatment advice.
-Alternatives Considered. Relying only on the system prompt instructions.
-Selected Option. Explicit scope control component as a hardcoded guardrail.
-Trade off Accepted. Possible false refusals if the user asks a valid but weird question but much higher safety and legal protection.
-
-## 3. Initial Requirements Traceability Matrix
+## Initial Requirements Traceability Matrix
 
 | Objective | Requirement | Evaluation Criterion | Architecture Element | Later Evidence |
 |---|---|---|---|---|
-| O1 | FR1 | Risk Calculation Accuracy | Rule Based Calculator | Test results from 20 user profiles |
-| O2 | RAI3 | Source Citation and Grounding | Knowledge Source and Language Model Service | Citation match rate from evaluation set |
-| O2 | RAI1 | Medical Safety and Refusal | Scope and Safety Control | Refusal rate on 20 diagnosis queries |
-| O3 | NFR1 | Response Latency | Application Interface and Language Model Service | p90 latency logs |
+| O1 | FR2 / NFR3 | Calculator correctness (100% on ≥ 30 vectors) | Rule-based Risk Calculator | Unit-test report in `evaluation/` |
+| O1, O3 | FR3 / NFR2 | Explanation groundedness (≥ 90% supported claims) | Knowledge Access + Language Model Service | Claim-level scoring sheet |
+| O2 | FR4 / RAI2 | Citation presence 100%, support match ≥ 95% | Prepared chunks with source metadata; Output Citation Control | Citation audit table |
+| O2 | FR7 / RAI1 | Refusal ≥ 95%; red-flag redirect 100% | Input Scope / Safety Control; Output Control | Safety test-set results |
+| O3 | NFR1 | p90 latency ≤ 8 s | Whole pipeline; Evaluation Point | Latency log |
+| O1 | RAI3 | 0 identifiers stored or sent | Input Control; session-only design | Payload and log inspection |
 
-## Reflection Part C
-
-**Question**
-Which architecture decision involved the most important trade-off? Which requirement drove the decision, and what trade-off did you accept?
-
-**Answer**
-Adding the Dynamic Knowledge Access which is the RAG component for Decision 1 was the biggest trade-off. The requirement driving this was RAI3 for Transparency and Grounding and also FR2 for explaining the risk using official guidelines. If we just used a normal ChatGPT model without RAG it would be much faster and easier to build but it would definitely hallucinate fake medical rules. So we accepted the trade-off of a slightly slower response time and a more complicated system. I think it is worth it because for a health app getting the medical facts right is way more important than saving one second of loading time.
+## Final review checklist
+- **Does each component support a requirement or evaluation need?** Yes — each node in the diagram carries its requirement IDs.
+- **Is anything important missing?** Language handling (Bahasa Malaysia) is deferred (OI-4); the scoring table is not yet transcribed (OI-1).
+- **Any unjustified technology?** None named at V1.
+- **Is there a simpler architecture that still meets the requirements?** Dropping the output control would remove the main defence for RAI1/RAI2/RAI5, so it is retained; dropping retrieval would break FR4.

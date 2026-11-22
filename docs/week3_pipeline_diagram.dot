@@ -1,0 +1,29 @@
+digraph P {
+  rankdir=LR; fontname="Helvetica"; labelloc=t; fontsize=20; nodesep=0.5; ranksep=0.55; pad=0.4;
+  label="Guide to Dia — Executed V1 Data Pipeline (Pathway A: PDF/TXT) — expands the DATA component of the V1 architecture";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=12, margin="0.18,0.12", fillcolor="#C8E6C9"];
+  edge [fontname="Helvetica", fontsize=10, color="#444444"];
+
+  src  [label="SOURCE\nS01 MoH CPG (PDF)\nS02 WHO fact sheet (print-PDF)\nS03 CDC risk-test page (print-PDF)\ndata/raw/  +  Cell 4B registry"];
+  ing  [label="INGEST\nselect_source(exact file)\nSHA-256 of each source"];
+  insp [label="INSPECT\npypdf extract per page\npages, chars, near-empty pages,\n2 sample pages"];
+  prep [label="PREPARE / TRANSFORM\nclean whitespace →\npage-aware sentence-pack\n(≤1000 chars, never crosses a page)"];
+  val  [label="VALIDATE OUTPUT\nfile exists, non-empty,\nrecord count, readable JSONL,\nSHA-256 of output"];
+  lin  [label="RECORD LINEAGE\nsource → output + processing label\nweek3_manifest.json\npipeline_manifest.json"];
+  out  [label="prepared_text.jsonl\n(one record per chunk:\nsource_id, url, page, locator, text)", fillcolor="#C8E6C9", shape=note];
+
+  src -> ing [label="raw PDFs"];
+  ing -> insp [label="verified files"];
+  insp -> prep [label="page text"];
+  prep -> val [label="chunk records"];
+  val -> lin [label="validated output"];
+  val -> out [label="store"];
+  lin -> out [style=dotted, arrowhead=none];
+
+  f1 [label="FAILURE 1 — scanned / near-empty page or figure-only page\nImpact: text silently missing → answer cannot be grounded\nResponse: STOP if a whole source is empty; otherwise list the pages,\nquarantine, flag in Week 4 completeness check (OCR = later iteration)", shape=note, fillcolor="#FDEDEC", color="#C0392B", fontcolor="#922B21", fontsize=11];
+  f2 [label="FAILURE 2 — numeric threshold split or table text garbled\n(e.g. “6.5 | %” or a table row flattened into one sentence)\nImpact: explanation may quote a wrong cut-off\nResponse: V2 check counts broken thresholds; chunk size/method\nre-decided; affected chunks reviewed manually before retrieval", shape=note, fillcolor="#FDEDEC", color="#C0392B", fontcolor="#922B21", fontsize=11];
+  insp -> f1 [style=dashed, color="#C0392B", arrowhead=none];
+  prep -> f2 [style=dashed, color="#C0392B", arrowhead=none];
+  { rank=same; insp; f1 }
+  { rank=same; prep; f2 }
+}
