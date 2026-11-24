@@ -1,0 +1,119 @@
+{
+  "audited_file": "data/pipeline_v1/documents/prepared_text.jsonl",
+  "records": 2000,
+  "completeness": {
+    "S01": {
+      "pages_total": 284,
+      "pages_with_text": 280,
+      "pages_with_chunks": 280,
+      "near_empty_pages": [
+        1,
+        2,
+        283,
+        284
+      ]
+    },
+    "S02": {
+      "pages_total": 88,
+      "pages_with_text": 85,
+      "pages_with_chunks": 85,
+      "near_empty_pages": [
+        10,
+        17,
+        82
+      ]
+    },
+    "S03": {
+      "pages_total": 292,
+      "pages_with_text": 292,
+      "pages_with_chunks": 292,
+      "near_empty_pages": []
+    }
+  },
+  "consistency": {
+    "distinct_schemas": 1,
+    "unregistered_source_ids": 0,
+    "bad_page_type": 0
+  },
+  "accuracy_auto": {
+    "chunks_checked": 2000,
+    "faithful_substring_pct": 100.0
+  },
+  "timeliness": {
+    "S01": {
+      "published": "2020-12",
+      "accessed": "2026-11-22",
+      "age_years": 5.9
+    },
+    "S02": {
+      "published": "2016",
+      "accessed": "2026-11-22",
+      "age_years": null
+    },
+    "S03": {
+      "published": "2021",
+      "accessed": "2026-11-22",
+      "age_years": null
+    }
+  },
+  "uniqueness": {
+    "duplicate_groups": 0,
+    "records_in_duplicate_groups": 0
+  },
+  "V1": {
+    "tested": 2000,
+    "passed": 2000,
+    "failed": 0,
+    "failure_examples": []
+  },
+  "V2": {
+    "thresholds_found": 1628,
+    "intact": 1628,
+    "broken": 0,
+    "examples": []
+  },
+  "coverage_keyword_chunks": {
+    "C1_risk_factors": {
+      "S01": 156,
+      "S02": 90,
+      "S03": 224
+    },
+    "C2_testing_next_steps": {
+      "S01": 182,
+      "S02": 34,
+      "S03": 5
+    },
+    "C3_asian_thresholds": {
+      "S01": 24,
+      "S02": 6,
+      "S03": 29
+    },
+    "C5_prevention_habits": {
+      "S01": 55,
+      "S02": 56,
+      "S03": 306
+    },
+    "C4_malaysian_pathway": {
+      "S01": 1,
+      "S02": 0,
+      "S03": 3
+    }
+  },
+  "pipeline_retention": {
+    "S01": {
+      "source_chars": 574914,
+      "chunk_chars": 574437,
+      "retained_pct": 99.9
+    },
+    "S02": {
+      "source_chars": 194916,
+      "chunk_chars": 194746,
+      "retained_pct": 99.9
+    },
+    "S03": {
+      "source_chars": 716962,
+      "chunk_chars": 716269,
+      "retained_pct": 99.9
+    }
+  }
+}

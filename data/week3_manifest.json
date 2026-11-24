@@ -1,0 +1,45 @@
+{
+  "pipeline_version": "week3-v1",
+  "generated_at_utc": "2026-11-22T13:42:06.994505+00:00",
+  "records": [
+    {
+      "source_id": "S01",
+      "source_filename": "moh_cpg_t2dm_6th_ed.pdf",
+      "source_sha256": "00309b4caf44597c7365338a76e569fa1d66cb7913dae49210482fd8b53f34dd",
+      "prepared_output": "data/processed/prepared_text.jsonl",
+      "prepared_sha256": "dc9e2d8edd48b34a421b2eadcaf25ff897b49a77dfe09e89adce56f22ba2c486",
+      "processing_note": "page-aware-sentence-pack-char-1000",
+      "source_version": "2020-12",
+      "source_url": "https://mems.my/wp-content/uploads/2021/03/CPG-T2DM_6th-Edition-2020_210226.pdf",
+      "accessed": "2026-11-22",
+      "access_rights": "Not verified",
+      "status": "Prepared; quality review pending"
+    },
+    {
+      "source_id": "S02",
+      "source_filename": "who_global_report_on_diabetes_2016.pdf",
+      "source_sha256": "295f6bb3d368bcdc0192864ebe0fa3ff7572fa2db08ee2d954b12b586e8787b0",
+      "prepared_output": "data/processed/prepared_text.jsonl",
+      "prepared_sha256": "dc9e2d8edd48b34a421b2eadcaf25ff897b49a77dfe09e89adce56f22ba2c486",
+      "processing_note": "page-aware-sentence-pack-char-1000",
+      "source_version": "2016",
+      "source_url": "https://apps.who.int/iris/bitstream/handle/10665/204617/9789241565257_eng.pdf",
+      "accessed": "2026-11-22",
+      "access_rights": "Not verified",
+      "status": "Prepared; quality review pending"
+    },
+    {
+      "source_id": "S03",
+      "source_filename": "moh_malaysian_dietary_guidelines_2020.pdf",
+      "source_sha256": "543778d634378181f885b7b1229f69bb379c202966771eb19fe1ce5e29052f1d",
+      "prepared_output": "data/processed/prepared_text.jsonl",
+      "prepared_sha256": "dc9e2d8edd48b34a421b2eadcaf25ff897b49a77dfe09e89adce56f22ba2c486",
+      "processing_note": "page-aware-sentence-pack-char-1000",
+      "source_version": "2021",
+      "source_url": "https://hq.moh.gov.my/nutrition/wp-content/uploads/2024/03/latest-01.Buku-MDG-2020_12Mac2024.pdf",
+      "accessed": "2026-11-22",
+      "access_rights": "Not verified",
+      "status": "Prepared; quality review pending"
+    }
+  ]
+}
